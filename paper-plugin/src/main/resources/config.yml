@@ -1,0 +1,11 @@
+# URL MCP-сервера Claude на хосте
+mcp-server-url: "http://YOUR_HOST_IP:25589"
+# Таймаут HTTP-запроса (миллисекунды)
+timeout-ms: 3000
+# Лимит сообщений (количество за период)
+rate-limit-count: 3
+# Период лимита (секунды)
+rate-limit-period: 30
+# Список разрешённых игроков (пустой = все могут использовать)
+allowed-players: []
+#  - YourPlayerName

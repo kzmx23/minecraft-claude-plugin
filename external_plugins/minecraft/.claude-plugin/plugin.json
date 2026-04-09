@@ -1,0 +1,6 @@
+{
+  "name": "minecraft",
+  "description": "Minecraft channel for Claude Code — chat with players in-game via /claude command",
+  "version": "0.0.1",
+  "keywords": ["minecraft", "channel", "mcp", "game"]
+}

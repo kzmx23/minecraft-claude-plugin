@@ -1,0 +1,10 @@
+name: ClaudeChat
+version: "1.0"
+main: com.egor.claudechat.ClaudeChatPlugin
+api-version: "1.21"
+description: "Send messages to Claude from Minecraft"
+author: kzmx23
+commands:
+  claude:
+    description: "Send a message to Claude"
+    usage: "/claude <message>"

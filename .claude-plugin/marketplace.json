@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "minecraft-claude-plugin",
+  "description": "Minecraft channel plugin for Claude Code",
+  "owner": {
+    "name": "kzmx23"
+  },
+  "plugins": [
+    {
+      "name": "minecraft",
+      "description": "Minecraft channel for Claude Code — chat with players in-game via /claude command",
+      "source": "./external_plugins/minecraft",
+      "homepage": "https://github.com/kzmx23/minecraft-claude-plugin"
+    }
+  ]
+}
