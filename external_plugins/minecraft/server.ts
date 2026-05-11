@@ -27,7 +27,52 @@ async function getContainerId(): Promise<string> {
   return id
 }
 
+// Commands that can destroy the server or bypass security. Always denied here —
+// Claude should not disable whitelist, grant OP, ban, or run destructive commands.
+// If a player needs one of these, use AdminMode in-game (/adminmode <minutes>)
+// with web-PIN confirmation instead.
+const DENIED_COMMAND = new RegExp(
+  [
+    String.raw`^whitelist\s+(off|remove|clear)`,
+    String.raw`^op(\s|$)`,
+    String.raw`^deop(\s|$)`,
+    String.raw`^ban(\s|$)`,
+    String.raw`^ban-ip(\s|$)`,
+    String.raw`^pardon(\s|$)`,
+    String.raw`^pardon-ip(\s|$)`,
+    String.raw`^kick(\s|$)`,
+    String.raw`^stop(\s|$)`,
+    String.raw`^restart(\s|$)`,
+    String.raw`^reload(\s|$)`,
+    String.raw`^gamerule\s+(mobGriefing|doFireTick|doDaylightCycle|keepInventory|commandBlockOutput)`,
+    String.raw`^fill(\s|$)`,
+    String.raw`^clone(\s|$)`,
+    String.raw`^setblock(\s|$)`,
+    String.raw`^summon\s+minecraft:(wither|ender_dragon|fireball)`,
+    String.raw`^kill\s+@(e|a)`,
+    String.raw`^clear\s+@(e|a)`,
+    String.raw`^scoreboard\s+objectives\s+setdisplay`,
+    String.raw`^team\s+(add|modify)`,
+    String.raw`^tellraw\s+@(a|e)`,
+    String.raw`^title\s+@(a|e)`,
+    String.raw`^execute\s+(as|at)\s+@(a|e)`,
+    String.raw`^lp\s+(group|user|track)`,
+    String.raw`^luckperms\s+(group|user|track)`,
+    String.raw`^datapack\s+disable`,
+    String.raw`^worldborder`,
+  ].join('|'),
+  'i',
+)
+
 async function rconExec(command: string): Promise<string> {
+  const trimmed = command.trim().replace(/^\//, '')
+  if (DENIED_COMMAND.test(trimmed)) {
+    process.stderr.write(`minecraft channel: DENIED command: ${trimmed}\n`)
+    throw new Error(
+      `command denied for safety: ${trimmed.split(/\s+/, 1)[0]}. ` +
+        `Use AdminMode in-game (/adminmode <minutes>) to unlock.`,
+    )
+  }
   const cid = await getContainerId()
   const proc = Bun.spawn(['sudo', 'docker', 'exec', cid, 'rcon-cli', command])
   const out = await new Response(proc.stdout).text()
